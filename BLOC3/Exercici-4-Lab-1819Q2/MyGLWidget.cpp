@@ -158,7 +158,7 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)  // Cal modificar aquesta funci
   makeCurrent();
   switch (event->key()) {
     case Qt::Key_F: {
-      FocusIndex++;
+      FocusIndex = (FocusIndex+1)%3;
       break;
     }
     default: event->ignore(); break;

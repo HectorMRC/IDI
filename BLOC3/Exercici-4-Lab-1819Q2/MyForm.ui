@@ -24,7 +24,6 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <zorder>horizontalSlider</zorder>
       </widget>
      </item>
      <item>
@@ -89,6 +88,10 @@
    <extends>QWidget</extends>
    <header>MyGLWidget.h</header>
    <container>1</container>
+   <slots>
+    <signal>setIndex(int)</signal>
+    <slot>onIndexChanged(int)</slot>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -100,12 +103,44 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>796</x>
-     <y>596</y>
+     <x>808</x>
+     <y>715</y>
     </hint>
     <hint type="destinationlabel">
      <x>839</x>
      <y>529</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>widget</receiver>
+   <slot>onIndexChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>395</x>
+     <y>705</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>607</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>widget</sender>
+   <signal>setIndex(int)</signal>
+   <receiver>horizontalSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>493</x>
+     <y>644</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>492</x>
+     <y>706</y>
     </hint>
    </hints>
   </connection>

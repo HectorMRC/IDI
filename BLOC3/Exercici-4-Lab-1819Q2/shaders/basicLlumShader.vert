@@ -80,11 +80,11 @@ void main()
 
   switch(findex%3){
     case 1: // Patricio
-      f_posFocus = vec3(4.,3.5,4.);
+      f_posFocus =  (view * vec4(4.,3.5,4., 1.)).xyz;
       break;
 
     case 2: // Arbre
-      f_posFocus = vec3(1.,3.5,1.);
+      f_posFocus =  (view * vec4(1.,3.5,1., 1.)).xyz;
       break;
 
     default: // Observer

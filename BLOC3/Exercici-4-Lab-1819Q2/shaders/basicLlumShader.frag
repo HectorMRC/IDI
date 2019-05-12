@@ -13,6 +13,10 @@ in vec3 f_posFocus; //Posició del focus segons l'index
 uniform vec3 colFocus; //Color del focus
 uniform vec3 llumAmbient;
 
+uniform mat4 proj;
+uniform mat4 view;
+uniform mat4 TG;
+
 out vec4 FragColor;
 
 vec3 Lambert (vec3 NormSCO, vec3 L) 
@@ -50,14 +54,31 @@ vec3 Phong (vec3 NormSCO, vec3 L, vec4 vertSCO)
     return (colRes + f_matspec * colFocus * shine); 
 }
 
+vec3 calcular_Phong(){
+    // Cal recordar que en matrius les multiplicacions s'han de fer en ordre invers!
+    // Una matriu de 4x4 es pot multiplicar per un vector de 4 posicions, per tant cal assignar els vec3 com de 4, i despres fer la conversió inversa.
+    vec4 FVertexSCO = view * TG * vec4(VertexSCO, 1.);
+    
+    mat3 FNormalMatrix = inverse (transpose (mat3 (view * TG)));
+    vec3 FNormalSCO = normalize(FNormalMatrix * NormalSCO);
+    
+    vec3 FfocusSCO = (view * vec4(f_posFocus, 1.0)).xyz;
+    vec3 FllumSCO = normalize(FfocusSCO - FVertexSCO.xyz);
+
+    return Phong(FNormalSCO, FllumSCO, FVertexSCO);
+}
+
 void main()
 {	
-	vec3 llumSCO = normalize(f_posFocus - VertexSCO); // Assumim que f_posFocus ve donat amb el format SCO
-  vec3 fcolor = Phong (NormalSCO, llumSCO, vec4(VertexSCO, 1.));
-	FragColor = vec4(fcolor,1);	
+  vec3 fcolor = calcular_Phong();
+  FragColor = vec4(fcolor,1);	
 
 	/*	La iluminació oferta pel mètode Phong atorga l'efecte de textura a l'escena (per exemple:
 		als ulls del patricio s'hi aprecia una certa reflexio); mentre que en el cas del mètode
 		Lamber el color es pla, no hi ha cap mena d'acabat en els colors iluminats.
+
+    vec3 llumSCO = normalize(f_posFocus - VertexSCO); // Assumim que f_posFocus ve donat amb el format SCO
+    vec3 fcolor = Phong (NormalSCO, llumSCO, vec4(VertexSCO, 1.));
+    FragColor = vec4(fcolor,1);	
 	*/
 }
